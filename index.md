@@ -2,5 +2,5 @@
 
 EJ Maranan
 
-* [Tests](./reports/tests/test/)
-* [JavaDoc](./reports/javadoc/)
+* [Tests](./tests/test/)
+* [JavaDoc](./javadoc/)
