@@ -17,11 +17,7 @@ java {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
-    dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
-    testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
 }
 
 tasks.withType(Test) {
@@ -36,3 +32,33 @@ application { //Allows  ./gradlew run --args=path-to-test-data
     mainClass = 'edu.odu.cs.MostCommonWords'
 }
 
+tasks.register('copyHtml', Copy) {
+    dependsOn build
+    from 'src/main/html'
+    into 'build/reports'
+}
+
+tasks.register('copyDocs', Copy) {
+    dependsOn javadoc
+    from 'build/docs'
+    into 'build/reports'
+}
+
+tasks.register('reports') {
+    dependsOn copyHtml, copyDocs
+}
+gitPublish {
+    repoUri = 'git@github.com:ODU-CS351-F26/CS351--exercise-documentation--emara002.git'
+    branch = 'gh-pages'
+    contents {
+        from 'build/reports'
+    }
+}
+
+tasks.named('gitPublishCopy') {
+    dependsOn reports
+}
+
+tasks.register('deployReports') {
+    dependsOn gitPublishPush
+}
